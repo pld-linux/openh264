@@ -27,6 +27,7 @@ Summary:	Header files for OpenH264 library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki OpenH264
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libstdc++-devel
 
 %description devel
 Header files for OpenH264 library.
