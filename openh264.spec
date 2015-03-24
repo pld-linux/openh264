@@ -6,15 +6,18 @@
 Summary:	H.264 codec library
 Summary(pl.UTF-8):	Biblioteka kodeka H.264
 Name:		openh264
-Version:	1.1
+Version:	1.4.0
 Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	https://github.com/cisco/openh264/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	2dccd64e0359acbaec54f442792bba67
-Patch0:		%{name}-firefox33.patch
+# Source0-md5:	06d92ee5bd231814394b7e29f0545e57
+Patch0:		%{name}-libdir.patch
 URL:		http://www.openh264.org/
 BuildRequires:	libstdc++-devel
+%ifarch %{ix86} %{x8664}
+BuildRequires:	nasm
+%endif
 BuildRequires:	rpmbuild(macros) >= 1.357
 %{?with_xulrunner:BuildRequires:	xulrunner-devel >= 2:33}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -81,6 +84,7 @@ ln -s /usr/include/xulrunner gmp-api
 
 %build
 %{__make} libraries binaries %{?with_xulrunner:plugin} \
+	ARCH=%{_target_base_arch} \
 	CXX="%{__cxx}" \
 	CFLAGS_OPT="%{rpmcxxflags}"
 
@@ -88,10 +92,11 @@ ln -s /usr/include/xulrunner gmp-api
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}}
 
-%{__make} install-headers \
-	PREFIX=$RPM_BUILD_ROOT%{_prefix}
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
+	PREFIX=%{_prefix} \
+	LIBDIR=%{_libdir}
 
-install libopenh264.so libopenh264.a $RPM_BUILD_ROOT%{_libdir}
 install h264dec h264enc $RPM_BUILD_ROOT%{_bindir}
 
 %if %{with xulrunner}
@@ -120,11 +125,13 @@ fi
 %doc CONTRIBUTORS LICENSE README.md RELEASES
 %attr(755,root,root) %{_bindir}/h264dec
 %attr(755,root,root) %{_bindir}/h264enc
-%attr(755,root,root) %{_libdir}/libopenh264.so
+%attr(755,root,root) %{_libdir}/libopenh264.so.0
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libopenh264.so
 %{_includedir}/wels
+%{_pkgconfigdir}/openh264.pc
 
 %files static
 %defattr(644,root,root,755)
