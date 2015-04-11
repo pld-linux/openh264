@@ -79,7 +79,7 @@ opartych na Gecko (takich jak Firefox/Iceweasel 33+).
 %patch0 -p1
 
 %if %{with xulrunner}
-ln -s /usr/include/xulrunner gmp-api
+ln -s $(pkg-config --variable=includedir mozilla-plugin) gmp-api
 %endif
 
 %build
