@@ -1,0 +1,27 @@
+--- openh264-1.4.0/build/platform-linux.mk~	2015-03-05 10:25:12.000000000 +0100
++++ openh264-1.4.0/build/platform-linux.mk	2015-04-26 11:54:05.533650907 +0200
+@@ -6,7 +6,11 @@
+ LDFLAGS += -lpthread
+ ifeq ($(ASM_ARCH), x86)
+ ifeq ($(ENABLE64BIT), Yes)
++ifeq ($(IS_X32), Yes)
++ASMFLAGS += -f elfx32
++else
+ ASMFLAGS += -f elf64
++endif
+ else
+ ASMFLAGS += -f elf
+ endif
+--- openh264-1.4.0/codec/common/x86/asm_inc.asm~	2015-03-05 10:25:12.000000000 +0100
++++ openh264-1.4.0/codec/common/x86/asm_inc.asm	2015-04-26 11:58:16.516975386 +0200
+@@ -122,6 +122,10 @@
+ SECTION .note.GNU-stack noalloc noexec nowrite progbits ; Mark the stack as non-executable
+ %endif
+ 
++%ifidn __OUTPUT_FORMAT__,elfx32
++SECTION .note.GNU-stack noalloc noexec nowrite progbits ; Mark the stack as non-executable
++%endif
++
+ %define arg1 rdi
+ %define arg2 rsi
+ %define arg3 rdx

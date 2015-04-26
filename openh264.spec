@@ -3,16 +3,21 @@
 # Conditional build:
 %bcond_without	xulrunner	# GMP plugin
 #
+%ifarch x32
+%undefine with_xulrunner
+%endif
 Summary:	H.264 codec library
 Summary(pl.UTF-8):	Biblioteka kodeka H.264
 Name:		openh264
 Version:	1.4.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	https://github.com/cisco/openh264/archive/v%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	06d92ee5bd231814394b7e29f0545e57
 Patch0:		%{name}-libdir.patch
+Patch1:		no-forced-arch.patch
+Patch2:		x32-asm.patch
 URL:		http://www.openh264.org/
 BuildRequires:	libstdc++-devel
 %ifarch %{ix86} %{x8664}
@@ -77,6 +82,8 @@ opartych na Gecko (takich jak Firefox/Iceweasel 33+).
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %if %{with xulrunner}
 ln -s $(pkg-config --variable=includedir mozilla-plugin) gmp-api
@@ -85,6 +92,9 @@ ln -s $(pkg-config --variable=includedir mozilla-plugin) gmp-api
 %build
 %{__make} libraries binaries %{?with_xulrunner:plugin} \
 	ARCH=%{_target_base_arch} \
+%ifarch x32
+	IS_X32=Yes \
+%endif
 	CXX="%{__cxx}" \
 	CFLAGS_OPT="%{rpmcxxflags}"
 
