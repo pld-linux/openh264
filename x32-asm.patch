@@ -1,9 +1,9 @@
---- openh264-1.4.0/build/platform-linux.mk~	2015-03-05 10:25:12.000000000 +0100
-+++ openh264-1.4.0/build/platform-linux.mk	2015-04-26 11:54:05.533650907 +0200
-@@ -6,7 +6,11 @@
- LDFLAGS += -lpthread
+--- openh264-1.7.0/build/platform-linux.mk.orig	2017-07-16 18:29:39.036814547 +0200
++++ openh264-1.7.0/build/platform-linux.mk	2017-07-16 18:33:08.330145489 +0200
+@@ -9,7 +9,11 @@
+ AR_OPTS = crD $@
  ifeq ($(ASM_ARCH), x86)
- ifeq ($(ENABLE64BIT), Yes)
+ ifeq ($(ARCH), x86_64)
 +ifeq ($(IS_X32), Yes)
 +ASMFLAGS += -f elfx32
 +else

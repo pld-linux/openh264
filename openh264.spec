@@ -1,7 +1,7 @@
 # TODO: handle GMP plugins better in browser-plugins architecture (only firefox33+ based browsers supported)
 #
 # Conditional build:
-%bcond_without	xulrunner	# GMP plugin
+%bcond_with	xulrunner	# GMP plugin
 #
 %ifarch x32
 %undefine with_xulrunner
@@ -9,12 +9,13 @@
 Summary:	H.264 codec library
 Summary(pl.UTF-8):	Biblioteka kodeka H.264
 Name:		openh264
-Version:	1.4.0
-Release:	2
+Version:	1.7.0
+Release:	1
 License:	BSD
 Group:		Libraries
+#Source0Download: https://github.com/cisco/openh264/releases/
 Source0:	https://github.com/cisco/openh264/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	06d92ee5bd231814394b7e29f0545e57
+# Source0-md5:	93da4e76cfda7ede8fd2df51b0021efd
 Patch0:		%{name}-libdir.patch
 Patch1:		no-forced-arch.patch
 Patch2:		x32-asm.patch
@@ -105,7 +106,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	PREFIX=%{_prefix} \
-	LIBDIR=%{_libdir}
+	LIBDIRNAME=%{_lib}
 
 install h264dec h264enc $RPM_BUILD_ROOT%{_bindir}
 
@@ -135,7 +136,8 @@ fi
 %doc CONTRIBUTORS LICENSE README.md RELEASES
 %attr(755,root,root) %{_bindir}/h264dec
 %attr(755,root,root) %{_bindir}/h264enc
-%attr(755,root,root) %{_libdir}/libopenh264.so.0
+%attr(755,root,root) %{_libdir}/libopenh264.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libopenh264.so.4
 
 %files devel
 %defattr(644,root,root,755)
