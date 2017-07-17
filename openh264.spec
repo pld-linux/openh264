@@ -106,7 +106,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
 	PREFIX=%{_prefix} \
-	LIBDIRNAME=%{_lib}
+	LIBDIR_NAME=%{_lib}
 
 install h264dec h264enc $RPM_BUILD_ROOT%{_bindir}
 
