@@ -1,10 +1,10 @@
 # TODO: handle GMP plugins better in browser-plugins architecture (only firefox33+ based browsers supported)
 #
 # Conditional build:
-%bcond_with	xulrunner	# GMP plugin
+%bcond_with	gmp_api		# Firefox (GeckoMediaPlugins based) plugin
 #
 %ifarch x32
-%undefine with_xulrunner
+%undefine with_gmp_api
 %endif
 Summary:	H.264 codec library
 Summary(pl.UTF-8):	Biblioteka kodeka H.264
@@ -20,12 +20,12 @@ Patch0:		%{name}-libdir.patch
 Patch1:		no-forced-arch.patch
 Patch2:		x32-asm.patch
 URL:		http://www.openh264.org/
+%{?with_gmp_api:BuildRequires:	gmp-api}
 BuildRequires:	libstdc++-devel
 %ifarch %{ix86} %{x8664}
 BuildRequires:	nasm
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.357
-%{?with_xulrunner:BuildRequires:	xulrunner-devel >= 2:33}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		gmp_plugindir	%{_browserpluginsdir}
@@ -86,12 +86,12 @@ opartych na Gecko (takich jak Firefox/Iceweasel 33+).
 %patch1 -p1
 %patch2 -p1
 
-%if %{with xulrunner}
-ln -s $(pkg-config --variable=includedir mozilla-plugin) gmp-api
+%if %{with gmp_api}
+ln -s /usr/include/gmp-api gmp-api
 %endif
 
 %build
-%{__make} libraries binaries %{?with_xulrunner:plugin} \
+%{__make} libraries binaries %{?with_gmp_api:plugin} \
 	ARCH=%{_target_base_arch} \
 %ifarch x32
 	IS_X32=Yes \
@@ -110,7 +110,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}}
 
 install h264dec h264enc $RPM_BUILD_ROOT%{_bindir}
 
-%if %{with xulrunner}
+%if %{with gmp_api}
 # see https://wiki.mozilla.org/GeckoMediaPlugins
 install -d $RPM_BUILD_ROOT%{gmp_plugindir}/gmp-openh264
 install libgmpopenh264.so $RPM_BUILD_ROOT%{gmp_plugindir}/gmp-openh264
@@ -149,7 +149,7 @@ fi
 %defattr(644,root,root,755)
 %{_libdir}/libopenh264.a
 
-%if %{with xulrunner}
+%if %{with gmp_api}
 %files -n browser-gmp-openh264
 %defattr(644,root,root,755)
 %dir %{gmp_plugindir}/gmp-openh264
