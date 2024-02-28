@@ -1,6 +1,6 @@
---- openh264-1.7.0/Makefile.orig	2017-07-16 18:14:26.133491636 +0200
-+++ openh264-1.7.0/Makefile	2017-07-16 18:16:09.546823791 +0200
-@@ -26,7 +26,7 @@
+--- openh264-2.4.1/Makefile.orig	2024-01-30 06:56:00.000000000 +0100
++++ openh264-2.4.1/Makefile	2024-02-28 06:19:21.537436639 +0100
+@@ -26,7 +26,7 @@ SHARED=-shared
  OBJ=o
  DESTDIR=
  LIBDIR_NAME=lib
@@ -8,4 +8,4 @@
 +SHAREDLIB_DIR=$(PREFIX)/$(LIBDIR_NAME)
  PROJECT_NAME=openh264
  MODULE_NAME=gmpopenh264
- GMP_API_BRANCH=Firefox39
+ GMP_API_BRANCH=Firefox114_2

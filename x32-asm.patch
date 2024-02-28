@@ -1,13 +1,14 @@
---- openh264-1.7.0/build/platform-linux.mk.orig	2017-07-16 18:29:39.036814547 +0200
-+++ openh264-1.7.0/build/platform-linux.mk	2017-07-16 18:33:08.330145489 +0200
-@@ -9,7 +9,11 @@
+--- openh264-2.4.1/build/platform-gnu-chain.mk.orig	2024-01-30 06:56:32.000000000 +0100
++++ openh264-2.4.1/build/platform-gnu-chain.mk	2024-02-28 18:05:31.669221886 +0100
+@@ -12,9 +12,11 @@ STATIC_LDFLAGS += -lpthread -lm
  AR_OPTS = crD $@
  ifeq ($(ASM_ARCH), x86)
  ifeq ($(ARCH), x86_64)
-+ifeq ($(IS_X32), Yes)
-+ASMFLAGS += -f elfx32
-+else
++ifneq ($(IS_X32), Yes)
  ASMFLAGS += -f elf64
+-else ifeq ($(ARCH), x32)
++else ($(ARCH), x32)
+ ASMFLAGS += -f elfx32
 +endif
  else
  ASMFLAGS += -f elf

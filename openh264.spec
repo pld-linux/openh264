@@ -9,13 +9,13 @@
 Summary:	H.264 codec library
 Summary(pl.UTF-8):	Biblioteka kodeka H.264
 Name:		openh264
-Version:	2.3.1
+Version:	2.4.1
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/cisco/openh264/releases/
 Source0:	https://github.com/cisco/openh264/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	fb26184faec8e0d99ffc87e2abd188aa
+# Source0-md5:	08396d6c467f7ae063d40b3a378870b0
 Patch0:		%{name}-libdir.patch
 Patch1:		no-forced-arch.patch
 Patch2:		x32-asm.patch
