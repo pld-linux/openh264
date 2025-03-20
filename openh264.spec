@@ -82,9 +82,9 @@ opartych na Gecko (takich jak Firefox/Iceweasel 33+).
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 %if %{with gmp_api}
 ln -s /usr/include/gmp-api gmp-api
